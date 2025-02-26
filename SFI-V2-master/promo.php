@@ -177,7 +177,7 @@ if (!empty($mensajeE1)) {
                 ?>
             </select>
             <br>
-            <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" name="BtnBaja"> Dar de alta</button>
+            <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" name="BtnAlta"> Dar de alta</button>
 				</form>
 				</div>
 

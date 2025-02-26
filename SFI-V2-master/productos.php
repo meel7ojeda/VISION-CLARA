@@ -84,6 +84,8 @@ require_once'funciones/accionesProd.php';
 
 				<div class="panel-tittle text-center"><a href="ProdArchivados.php" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">   ARCHIVADOS</a></div>
 <?php } ?>
+				<div class="panel-tittle text-center"><a href="marcas.php" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">   MARCAS</a></div>
+
 			</div>
 			
 <!-- --------------------------LISTADO-------------------------------------------------------- -->			

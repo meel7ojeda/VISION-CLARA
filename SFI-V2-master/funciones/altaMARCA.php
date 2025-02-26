@@ -16,20 +16,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'&& isset($_POST['BtnAlta'])) {
 
 
     if ($_POST['accion'] === 'dar_alta') {
-        $user_id = intval($_POST['CODPROMO']);
-        $sql = "UPDATE promociones SET activo = 1 WHERE id_promo= ?";
+        $user_id = intval($_POST['IDMARCA']);
+        $sql = "UPDATE marca SET disponibilidad = 1 WHERE id_marca= ?";
 
         if ($stmt = $conn->prepare($sql)) {
             $stmt->bind_param("i", $user_id);
 
             if ($stmt->execute()) {
                 if ($stmt->affected_rows > 0) {
-                    $mensajeC2 = "Promocion dada de ALTA con éxito.";
+                    $mensajeC2 = "Marca dada de ALTA con éxito.";
                 } else {
-                    $mensajeE2 = "No se encontró ninguna promo con el ID proporcionado o ya está actualizado.";
+                    $mensajeE2 = "No se encontró ninguna marca con el ID proporcionado o ya está actualizado.";
                 }
             } else {
-                $mensajeE2 = "Error al actualizar la actividad de la promo: " . $stmt->error;
+                $mensajeE2 = "Error al actualizar la actividad de la marca: " . $stmt->error;
             }
 
             $stmt->close();

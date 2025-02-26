@@ -3,16 +3,11 @@ require_once '../funciones/conexion.php';
 $MiConexion = ConexionBD();
 require_once '../funciones/autenticacion.php';
 
-$SQL = "SELECT c.nombre as nombre, 
-               c.apellido as apellido,
-               c.DNI_CLI as dni,
-               c.email as email,
-               c.ciudad as ciudad,
-               p.Provincia_desc as provincia,
-               c.contacto as contacto
-        FROM cliente c
-        INNER JOIN provincia p ON p.id_prov = c.id_prov
-        WHERE c.Disponibilidad = 1";
+$SQL = "SELECT m.id_marca as codigo, 
+               m.marca as marca,
+              e.estatus as estatus
+        FROM marca m, estatus e
+        WHERE m.id_estatus=e.id_estatus AND m.disponibilidad = 1";
 
 $result = $MiConexion->query($SQL);
 
@@ -24,7 +19,7 @@ date_default_timezone_set('America/Argentina/Buenos_Aires');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reporte de Clientes Activos</title>
+    <title>Reporte de Marcas Activas</title>
     <link rel="stylesheet" href="../css/normalize.css">
     <link rel="stylesheet" href="../css/material.min.css">
     <link rel="stylesheet" href="../css/material-design-iconic-font.min.css">
@@ -72,18 +67,18 @@ date_default_timezone_set('America/Argentina/Buenos_Aires');
         }
         @media print {
             .reporte {
-                max-width: 100%; 
-                overflow: visible; 
+                max-width: 100%;
+                overflow: visible;
                 page-break-inside: avoid;
             }
             table {
-                width: 100%; 
+                width: 100%;
             }
             button, a { 
-                display: none !important;
+                display: none;
             }
         }
-        p{
+    p{
         font-size: 10px;
         margin-bottom: 0px;
       }
@@ -91,46 +86,32 @@ date_default_timezone_set('America/Argentina/Buenos_Aires');
 </head>
 <body>
     <div class="reporte">
-        <h3>Reporte de Clientes Activos</h3>
+        <h3>Reporte de Marcas Activas</h3>
 <?php echo "<p>Descarga: " . date("d/m/Y H:i:s") . "</p>"; ?>
 
         <?php if ($result->num_rows > 0): ?>
             <table>
                 <thead>
                     <tr>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>DNI</th>
-                        <th>Email</th>
-                        <th>Ciudad</th>
-                        <th>Provincia</th>
-                        <th>Contacto</th>
+            <th>Codigo</th>
+            <th>Marca</th>
+            <th>Estatus</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php while ($row = $result->fetch_assoc()): ?>
                         <tr>
-                            <td><?= htmlspecialchars($row['nombre']) ?></td>
-                            <td><?= htmlspecialchars($row['apellido']) ?></td>
-                            <td><?= htmlspecialchars($row['dni']) ?></td>
-                            <td><?= htmlspecialchars($row['email']) ?></td>
-                            <td><?= htmlspecialchars($row['ciudad']) ?></td>
-                            <td><?= htmlspecialchars($row['provincia']) ?></td>
-                            <td><?= htmlspecialchars($row['contacto']) ?></td>
+                            <td><?= htmlspecialchars($row['codigo']) ?></td>
+                            <td><?= htmlspecialchars($row['marca']) ?></td>
+                            <td><?= htmlspecialchars($row['estatus']) ?></td>
                         </tr>
                     <?php endwhile; ?>
                 </tbody>
             </table>
-            <br>
              <div >
-            <div>
-            <a href="pdf_clientes_activos.php" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-    DESCARGAR PDF</a>
-        </div>
-
         <br>
         <div>
-            <a href="excel_clientes.php" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+            <a href="excel_marcas.php" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
     DESCARGAR EXCEL
 </a>
         </div>

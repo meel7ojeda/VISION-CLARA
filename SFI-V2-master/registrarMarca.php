@@ -4,11 +4,11 @@ $MiConexion=ConexionBD();
 require_once 'funciones/autenticacion.php';
 
 
-require_once 'funciones/insertPromo.php';
-require_once 'funciones/selectPromo.php';
+require_once 'funciones/insertMarca.php';
+require_once 'funciones/selectEstatus.php';
 
-$ListadoP = ListarPromo($MiConexion);
-$CantidadP = count($ListadoP);
+$ListadoE = ListarEstatus($MiConexion);
+$CantidadE = count($ListadoE);
 
 $resultado='';
 $mensajeC='';
@@ -16,11 +16,11 @@ $mensajeE='';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST'&& isset($_POST['BtnREG'])) {
  if ($_POST['accion'] === 'registro') {
-    $resultado = InsertarPromo($MiConexion);
+    $resultado = InsertarMarca($MiConexion);
     if ($resultado) {
-        $mensajeC= 'Promoción insertada con éxito';
+        $mensajeC= 'Marca registrada con éxito';
     } else {
-        $mensajeE ='Error al insertar la promoción';
+        $mensajeE ='Error al registrar marca';
     }
 }
 }
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'&& isset($_POST['BtnREG'])) {
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Registrar Promo</title>
+	<title>Registrar Marca</title>
 	<link rel="stylesheet" href="css/normalize.css">
 	<link rel="stylesheet" href="css/sweetalert2.css">
 	<link rel="stylesheet" href="css/material.min.css">
@@ -67,11 +67,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'&& isset($_POST['BtnREG'])) {
 		
 		<section class="full-width header-well">
 			<div class="full-width header-well-icon">
-				<i class="zmdi zmdi-favorite"></i>
+				<i class="zmdi zmdi-label-heart"></i>
 			</div>
 			<div class="full-width header-well-text">
 				<p class="text-condensedLight">
-					REGISTRAR PROMO
+					REGISTRAR MARCA
 				</p>
 			</div>
 		</section>
@@ -82,14 +82,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'&& isset($_POST['BtnREG'])) {
 					<div class="mdl-cell mdl-cell--12-col">
 						<div class="full-width panel mdl-shadow--2dp">
 							<div class="full-width panel-tittle bg-primary text-center tittles">
-								Nueva promocion
+								Nueva marca
 							</div>
 							<div class="full-width panel-content">
 							
 <?php
 // Mostrar los mensajes solo si no están vacíos
 if (!empty($mensajeC)) {
-    echo "<div class='mensaje-correcto'>$mensajeC</div>";
+    echo "<div class='mensaje-correcto'>$mensajeC -  <b><a href=marcas.php>Volver</a></b></div>";
     }
 
 if (!empty($mensajeE)) {
@@ -99,50 +99,52 @@ if (!empty($mensajeE)) {
 								<form role="form" method="POST"> <input type="hidden" name="accion" value="registro">
 									<div class="mdl-grid">
 										<div class="mdl-cell mdl-cell--12-col">
-									        <legend class="text-condensedLight"><i class="zmdi zmdi-border-color"></i> &nbsp; DESCRIPCION DE PROMOCION</legend><br>
+									        <legend class="text-condensedLight"><i class="zmdi zmdi-border-color"></i> &nbsp; DESCRIPCION DE MARCA</legend><br>
 									    </div>
 									   
-									    <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
-									    	<legend>CODIGO PROMO:</legend><BR>
-											<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-												<input class="mdl-textfield__input" type="text" id="CODPROMO" name="CODPROMO" value="<?php echo !empty($_POST['CODPROMO']) ? $_POST['CODPROMO'] : ''; ?>">
-												<label class="mdl-textfield__label" for="descriptionPayment">CODIGO PROMO</label>
+									    <div class="mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet"><legend>CODIGO: codigo automatico</legend><BR>
 											</div>
-									    </div>
 
 
 									    <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
-									    	<legend>PROMOCION:</legend><BR>
+									    	<legend><i class="zmdi zmdi-border-color"></i>MARCA:</legend>
 											<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-												<input class="mdl-textfield__input" type="text" id="PROMO" name="PROMO" value="<?php echo !empty($_POST['PROMO']) ? $_POST['PROMO'] : ''; ?>">
-												<label class="mdl-textfield__label" for="descriptionPayment">PROMO nombre</label>
+												<input class="mdl-textfield__input" type="text" id="MARCA" name="MARCA" value="<?php echo !empty($_POST['MARCA']) ? $_POST['MARCA'] : ''; ?>">
+												<label class="mdl-textfield__label" for="descriptionPayment">Nombre</label>
 											</div>
 									    </div>
-
-									<div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
-										<legend>TERMINOS: </legend><BR>
-											<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-												<textarea class="mdl-textfield__input" type="textarea" id="TERM" name="TERM" value="<?php echo !empty($_POST['TERM']) ? $_POST['TERM'] : ''; ?>"></textarea>
-												<label class="mdl-textfield__label" for="descriptionPayment">TERMINOS</label>
-											</div>
+<div class="mdl-cell mdl-cell--12-col">
+									        <legend class="text-condensedLight"><i class="zmdi zmdi-border-color"></i> &nbsp; ESTATUS </legend>
 									    </div>
+										<div class="mdl-cell mdl-cell--12-col">
+											<div class="mdl-textfield mdl-js-textfield">
+												<select class="mdl-textfield__input" aria-label="Selector" id="selector" name="ESTATUS">
+													<option>Seleccionar estatus</option>
+                          <?php 
+            $selected='';
+           for ($i=0 ; $i < $CantidadE ; $i++) {
+           if (!empty($_POST['ESTATUS']) && $_POST['ESTATUS'] ==  $ListadoE[$i]['IDESTATUS']) {
+            $selected = 'selected';
+            }else {
+            $selected='';
+            }
+            ?>
+            <option value="<?php echo $ListadoE[$i]['IDESTATUS']; ?>" <?php echo $selected; ?>  >
+            <?php echo $ListadoE[$i]['ESTATUS']; ?>
+            </option>
+            <?php } ?>
+            </select>            
+          	</div>
+						</div>
 
-									<div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
-										<legend>VALOR DESCUENTO: </legend><BR>
-											<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-												<input class="mdl-textfield__input" type="number" id="DESC" name="DESC" value="<?php echo !empty($_POST['DESC']) ? $_POST['DESC'] : ''; ?>">
-												<label class="mdl-textfield__label" for="descriptionPayment">DESCUENTO</label>
-												<span class="mdl-textfield__error">Invalid description</span>
-											</div>
-									    </div>
-
+										<br>
 									<input type="hidden" name="Activo" value="1">
 
 									<p class="text-center">
 										<button type="submit" name="BtnREG" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored bg-primary text-center" id="btn-addPayment" >
 											<i class="zmdi zmdi-plus"></i>
 										</button>
-										<div class="mdl-tooltip" for="btn-addPayment">AÑADIR PROMOCION</div>
+										<div class="mdl-tooltip" for="btn-addPayment">AÑADIR MARCA</div>
 									</p>
 								</form>
 								</div>

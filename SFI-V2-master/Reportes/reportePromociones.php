@@ -39,13 +39,13 @@ date_default_timezone_set('America/Argentina/Buenos_Aires');
             margin: auto;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             overflow-x: auto;
+            width: 1000px;
         }
         h1, h2, h3 {
             text-align: center;
-            color: #333;
         }
         table {
-            table-layout: fixed;
+            table-layout: auto;
             word-wrap: break-word;
             width: 100%;
             border-collapse: collapse;
@@ -79,11 +79,16 @@ date_default_timezone_set('America/Argentina/Buenos_Aires');
                 display: none;
             }
         }
+        p{
+        font-size: 10px;
+        margin-bottom: 0px;
+      }
     </style>
 </head>
 <body>
     <div class="reporte">
         <h3>Reporte de Promociones Activas</h3>
+<?php echo "<p>Descarga: " . date("d/m/Y H:i:s") . "</p>"; ?>
 
         <?php if ($result->num_rows > 0): ?>
             <table>
